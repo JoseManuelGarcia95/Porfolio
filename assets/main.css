@@ -1,38 +1,280 @@
-.main-container {
-    font-family: 'Georgia', serif;
-    background: linear-gradient(135deg, #ece9e6, #ffffff);
-    align-items: center;
-    height: 100vh;
-    justify-content: center;
-    display: flex;
+/* Estilos base */
+body {
+    background: linear-gradient(135deg, #f5f2ee 0%, #e8e3dd 100%);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    background-attachment: fixed;
 }
 
+/* Contenedor principal del libro */
 .book-container {
-    text-align: center;
-    perspective: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    gap: 2rem;
+}
+
+/* Lomo del libro */
+.book-spine {
+    background: linear-gradient(to bottom, #8B4513, #654321);
+    width: 30px;
+    height: 600px;
+    border-radius: 4px 0 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.book-spine::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 50%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-50%);
+}
+
+/* Página del libro */
+.book-page {
+    background: linear-gradient(to bottom right, #fff6e5, #faf5f0);
+    padding: 3rem;
+    width: 500px;
+    height: 600px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 
+        5px 5px 20px rgba(0, 0, 0, 0.2),
+        inset -1px 0 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e6d9c3;
+    border-left: none;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: perspective(1000px) rotateY(-2deg);
+    transition: all 0.3s ease;
+}
+
+.book-page:hover {
+    transform: perspective(1000px) rotateY(0deg);
+    box-shadow: 
+        8px 8px 25px rgba(0, 0, 0, 0.25),
+        inset -1px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Líneas de margen en las páginas */
+.book-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 60px;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        #ffb3ba 5%, 
+        #ffb3ba 95%, 
+        transparent 100%);
+    opacity: 0.3;
+}
+
+/* Agujeros de anillas (decorativo) */
+.book-page::after {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 25px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, transparent 40%, #e6d9c3 45%);
+    box-shadow: 
+        0 60px 0 #e6d9c3,
+        0 120px 0 #e6d9c3,
+        0 180px 0 #e6d9c3,
+        0 240px 0 #e6d9c3,
+        0 300px 0 #e6d9c3;
+}
+
+/* Sombra del libro */
+.book-shadow {
+    width: 30px;
+    height: 590px;
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.3) 0%, 
+        rgba(0, 0, 0, 0.1) 50%, 
+        transparent 100%);
+    border-radius: 0 4px 4px 0;
+    transform: skewY(-1deg);
+}
+
+/* Portada especial */
+.book-cover {
+    background: linear-gradient(135deg, #f4e4bc 0%, #e8d5b7 100%);
+    border: 3px solid #8B4513;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-cover::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid #A0522D;
+    border-radius: 4px;
+    background: linear-gradient(45deg, 
+        transparent 0%, 
+        rgba(160, 82, 45, 0.1) 25%, 
+        transparent 50%, 
+        rgba(160, 82, 45, 0.1) 75%, 
+        transparent 100%);
+}
+
+/* Índice */
+.table-of-contents {
+    padding: 2rem 0;
+}
+
+.index-item {
+    padding: 0.8rem 0;
+    border-bottom: 1px dotted #D2B48C;
+    font-size: 1.1rem;
+    color: #654321;
+    transition: color 0.3s ease;
+}
+
+.index-item:hover {
+    color: #8B4513;
+    cursor: pointer;
+}
+
+.index-item:last-child {
+    border-bottom: none;
+}
+
+/* Contenedor de navegación */
+.navigation-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 69, 19, 0.2);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Botones de navegación */
+.nav-button {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    border-radius: 25px !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid transparent !important;
+}
+
+.nav-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3) !important;
+    border-color: #8B4513 !important;
+}
+
+.nav-button:disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+}
+
+/* Efectos de texto */
+h1, h2, h3 {
+    color: #8B4513;
+    text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.1);
+}
+
+/* Animaciones sutiles */
+@keyframes pageFlip {
+    0% { transform: perspective(1000px) rotateY(-15deg); }
+    100% { transform: perspective(1000px) rotateY(0deg); }
 }
 
 .book-page {
-    width: 400px;
-    min-height: 300px;
-    background: #fdf6e3;
-    border: 1px solid #d3c4a3;    
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
+    animation: pageFlip 0.6s ease-out;
 }
 
-.book-page.flipping {
-    transform: rotateY(180deg);
+/* Responsive design */
+@media (max-width: 768px) {
+    .book-page {
+        width: 350px;
+        height: 500px;
+        padding: 2rem;
+        transform: none;
+    }
+    
+    .book-page:hover {
+        transform: none;
+    }
+    
+    .book-spine {
+        height: 500px;
+        width: 25px;
+    }
+    
+    .book-shadow {
+        height: 490px;
+        width: 25px;
+    }
+    
+    body {
+        padding: 10px;
+    }
 }
 
-.chapter-title {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+@media (max-width: 480px) {
+    .book-page {
+        width: 300px;
+        height: 450px;
+        padding: 1.5rem;
+    }
+    
+    .book-spine {
+        height: 450px;
+        width: 20px;
+    }
+    
+    .book-shadow {
+        height: 440px;
+        width: 20px;
+    }
+    
+    .navigation-container {
+        padding: 0.8rem 1.5rem;
+    }
 }
 
-.chapter-content {
-    font-size: 1em;
-    line-height: 1.6;
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .book-page,
+    .nav-button {
+        animation: none;
+        transition: none;
+    }
+    
+    .book-page:hover,
+    .nav-button:hover {
+        transform: none;
+    }
 }
