@@ -1,40 +1,29 @@
 import reflex as rx
 
-class BookState(rx.State): 
-    # Variables reactivas (que pueden cambiar)
+class BookState(rx.State):
+    pages = [
+        {"title": "Portada", "content": "Bienvenidos a mi portfolio."},
+        {"title": "Sobre mí", "content": "Soy José Manuel, desarrollador con pasión por crear soluciones eficientes."},
+        {"title": "Habilidades", "content": "Python, JavaScript, React, Reflex, HTML, CSS..."},
+        {"title": "Proyectos", "content": "Listado de mis proyectos más relevantes con detalles técnicos."},
+        {"title": "Experiencia", "content": "Mi experiencia profesional y académica."},
+        {"title": "Contacto", "content": "¿Listo para trabajar juntos? Escríbeme."}
+    ]
     current_page: int = 0
-    total_pages: int = 6
     is_flipping: bool = False
 
-    # Datos fijos
-    page_titles: list[str] = [
-        "Portada",
-        "Sobre mí",
-        "Habilidades",
-        "Proyectos",
-        "Experiencia",
-        "Contacto",
-    ]
-
-    page_content: dict[str, str] = {
-        "Portada": "Bienvenidos a mi portfolio",
-        "Sobre mí": "Soy José Manuel...",
-        "Habilidades": "Python, React, JavaScript...",
-        "Proyectos": "Mis proyectos más destacados...",
-        "Experiencia": "Mi experiencia profesional...",
-        "Contacto": "¿Listo para trabajar juntos?",
-    }
-
-    # Métodos para cambiar de página
+    #Navegación
     def next_page(self):
-        if self.current_page < self.total_pages - 1 and not self.is_flipping:
+        if self.current_page < len(self.pages) -1:
             self.is_flipping = True
+            yield
             self.current_page += 1
             self.is_flipping = False
 
     def previous_page(self):
-        if self.current_page > 0 and not self.is_flipping:
+        if self.current_page > 0:
             self.is_flipping = True
+            yield
             self.current_page -= 1
             self.is_flipping = False
 
@@ -42,11 +31,15 @@ class BookState(rx.State):
         if 0 <= page_number < self.total_pages:
             self.current_page = page_number
 
-    # Propiedades reactivas
+    #Propiedades reactivas
+    @rx.var
+    def total_pages(self) -> int:
+        return len(self.pages)
+
     @rx.var
     def current_title(self) -> str:
-        return self.page_titles[self.current_page]
+        return self.pages[self.current_page]["title"]
 
     @rx.var
     def current_content(self) -> str:
-        return self.page_content[self.page_titles[self.current_page]]
+        return self.pages[self.current_page]["content"]
